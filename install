@@ -7,6 +7,12 @@ gitroot='git://github.com/yuyichao/s-util.git'
 
 cd "$pkgdir"
 
+{
+    read predate
+    read prerel
+    read prever
+} < "${stat_f}"
+
 if [ -d "src/${pkgname}" ] ;then
     cd "src/${pkgname}" && git pull orgin
 else
@@ -19,8 +25,11 @@ fi
 git checkout master
 
 nwst_tg=$(git tag -l | tail -1)
-
 nwst_dt=$(git log --pretty=format:%ct -1)
+
+((day = nwst_dt / 86400))
+
+curdate=$(date +%Y%m%d)
 
 
 

@@ -1,4 +1,7 @@
 #!/bin/bash
+#Maintainer: Yichao Yu <yyc1992@gmail.com>
+#Contributor: Yichao Yu <yyc1992@gmail.com>
+
 pkgname=s-util-git
 pkgdesc="Simple utilities, git version"
 arch=('any')
