@@ -10,6 +10,7 @@ cd "$pkgdir"
 {
     read predate
     read prerel
+    read presec
     read prever
 } < "${stat_f}"
 
@@ -31,15 +32,13 @@ nwst_dt=$(git log --pretty=format:%ct -1)
 
 curdate=$(date +%Y%m%d)
 
-
-
 _mkinstl()
 {
-    local pkgdir="$1"
+    local pkgdir="$1" srcdir="$2"
     cat > "${pkgdir}/s-util.install" <<EOF
 post_install()
 {
-$(type post_instl | awk 'NR > 1')
+$()
 post_instl /etc/bash.bashrc /usr/bin
 }
 pre_remove()
@@ -49,6 +48,19 @@ pre_rm /usr/share/sutil
 }
 EOF
 }
+
+if [[ "$presec" < "$nwst_dt" ]] ;then
+    
+else
+    currel="$prerel"
+    curdate="$predate"
+    nwst_dt="$predate"
+fi
+
+if [[ "$nwst_tg" != "$prever" ]] ;then
+    git checkout "${nwst_tg}"
+fi
+
 
 [[ $mkpkg_git == 1 ]] && {
     {
