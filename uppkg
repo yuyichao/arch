@@ -5,7 +5,11 @@ stat_f="$2"
 pkgname="s-util"
 gitroot='git://github.com/yuyichao/s-util.git'
 
+scptdir=$(cd -P $(dirname "${BASH_SOURCE}") && pwd)
+
 cd "$pkgdir"
+
+pkgdir="$PWD"
 
 {
     read predate
@@ -14,11 +18,13 @@ cd "$pkgdir"
     read prever
 } < "${stat_f}"
 
-if [[ -d "src/${pkgname}" ]] ;then
-    cd "src/${pkgname}" && git pull orgin
+if [[ -d "${pkgdir}/src/${pkgname}" ]] ;then
+    cd "${pkgdir}/src/${pkgname}" &&
+    git checkout master &&
+    git pull orgin
 else
-    mkdir -p src
-    cd src
+    mkdir -p "${pkgdir}/src"
+    cd "${pkgdir}/src"
     git clone "${gitroot}"
     cd "${pkgname}"
 fi
@@ -50,11 +56,27 @@ EOF
 }
 
 if [[ "$presec" < "$nwst_dt" ]] ;then
-    
+    if [[ ${predate} == ${curdate} ]] ;then
+	((currel = prerel + 1))
+    else
+	((currel = 1))
+    fi
+    mkdir -p "${pkgdir}/pkg-git"
+    cd
+    {
+	echo "pkgver=${curdate}"
+	echo "pkgrel=${currel}"
+	cat
+    } < "${scptdir}/_PKGBUILD-git" > "${pkgdir}/pkg-git/PKGBUILD"
+    _mkinstl "${pkgdir}/pkg-git" "${pkgdir}/src/${pkgname}"
+    cd "${pkgdir}/pkg-git"
+    makepkg --source
+    aurup "${pkgname}-git-${pkgver}-${pkg-rel}.pkg.tar.gz"
+    cd "${pkgdir}/src/${pkgname}"
 else
     currel="$prerel"
     curdate="$predate"
-    nwst_dt="$predate"
+    nwst_dt="$presec"
 fi
 
 if [[ "$nwst_tg" != "$prever" ]] ;then
