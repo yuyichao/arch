@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+cate="devel"
 pkgdir="$1"
 stat_f="$2"
 pkgname="s-util"
@@ -62,7 +63,6 @@ if [[ "$presec" < "$nwst_dt" ]] ;then
 	((currel = 1))
     fi
     mkdir -p "${pkgdir}/pkg-git"
-    cd
     {
 	echo "pkgver=${curdate}"
 	echo "pkgrel=${currel}"
@@ -71,7 +71,7 @@ if [[ "$presec" < "$nwst_dt" ]] ;then
     _mkinstl "${pkgdir}/pkg-git" "${pkgdir}/src/${pkgname}"
     cd "${pkgdir}/pkg-git"
     makepkg --source
-    aurup "${pkgname}-git-${pkgver}-${pkg-rel}.pkg.tar.gz"
+    aurup "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "$cate"
     cd "${pkgdir}/src/${pkgname}"
 else
     currel="$prerel"
@@ -83,18 +83,9 @@ if [[ "$nwst_tg" != "$prever" ]] ;then
     git checkout "${nwst_tg}"
 fi
 
-
-[[ $mkpkg_git == 1 ]] && {
-    {
-	echo "pkgver=${pkgver}"
-	echo "pkgrel=${pkgrel}"
-	cat
-    } < "${s_srcdir}/_PKGBUILD-git" > "${currentdir}/PKGBUILD"
-    _mkinstl "${currentdir}"
-    exit
-}
-
-cat > "${varlst}" <<EOF
-${_S_INSTALL_DIST}
-${_S_BASH_RC}
-EOF
+{
+    echo "$curdate"
+    echo "$currel"
+    echo "$nwst_dt"
+    echo "$nwst_tg"
+} > "${stat_f}"
