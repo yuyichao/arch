@@ -14,7 +14,7 @@ cd "$pkgdir"
     read prever
 } < "${stat_f}"
 
-if [ -d "src/${pkgname}" ] ;then
+if [[ -d "src/${pkgname}" ]] ;then
     cd "src/${pkgname}" && git pull orgin
 else
     mkdir -p src
@@ -38,12 +38,12 @@ _mkinstl()
     cat > "${pkgdir}/s-util.install" <<EOF
 post_install()
 {
-$()
+$(${srcdir}/install --post_instl)
 post_instl /etc/bash.bashrc /usr/bin
 }
 pre_remove()
 {
-$(type pre_rm | awk 'NR > 1')
+$(${srcdir}/install --pre_rm)
 pre_rm /usr/share/sutil
 }
 EOF
