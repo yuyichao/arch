@@ -3,6 +3,7 @@
 #Contributor: Yichao Yu <yyc1992@gmail.com>
 
 pkgname=s-util
+pkgrel=1
 pkgdesc="Simple utilities"
 arch=('any')
 url="https://github.com/yuyichao/s-util"

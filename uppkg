@@ -3,6 +3,11 @@
 cate="devel"
 pkgdir="$1"
 stat_f="$2"
+
+if ! [[ $stat_f =~ ^/ ]] ;then
+    stat_f="$PWD/$stat_f"
+fi
+
 pkgname="s-util"
 gitroot='git://github.com/yuyichao/s-util.git'
 

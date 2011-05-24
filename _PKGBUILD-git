@@ -7,7 +7,6 @@ pkgdesc="Simple utilities, git version"
 arch=('any')
 provides=('s-util')
 conflicts=('s-util')
-replace=('s-util')
 url="https://github.com/yuyichao/s-util"
 license=('GPL')
 install=(s-util.install)
@@ -30,7 +29,7 @@ package()
     msg "Connecting to github.com"
 
     if [ -d "$startdir/src/$_gitname" ] ;then
-	cd "$_gitname" && git pull origin
+	cd "$startdir/src/$_gitname" && git pull origin
 	msg "The local files are updated."
     else
 	git clone "$_gitroot"
