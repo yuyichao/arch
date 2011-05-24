@@ -1,14 +1,10 @@
 #!/bin/bash
-#Maintainer: Yichao Yu <yyc1992@gmail.com>
-#Contributor: Yichao Yu <yyc1992@gmail.com>
 
-pkgname=s-util
 pkgrel=1
 pkgdesc="Simple utilities"
 arch=('any')
 url="https://github.com/yuyichao/s-util"
 license=('GPL')
-install=('s-util.install')
 _fname="yuyichao-s-util-v${pkgver}-0-${_githash}"
 source="https://download.github.com/${_fname}.tar.gz"
 depends=('bash' 'coreutils' 'findutils' 'grep' 'awk' 'sed')
