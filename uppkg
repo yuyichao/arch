@@ -13,21 +13,28 @@ gitroot='git://github.com/yuyichao/s-util.git'
 
 scptdir=$(cd -P $(dirname "${BASH_SOURCE}") && pwd)
 
+mkdir -p "$pkgdir"
 cd "$pkgdir"
 
 pkgdir="$PWD"
 
+[[ -f "$stat_f" ]] &&
 {
     read predate
     read prerel
     read presec
     read prever
-} < "${stat_f}"
+} < "${stat_f}" || {
+    predate=0
+    prerel=0
+    presec=0
+    prever=0
+}
 
 if [[ -d "${pkgdir}/src/${pkgname}" ]] ;then
     cd "${pkgdir}/src/${pkgname}" &&
     git checkout master &&
-    git pull orgin
+    git pull origin
 else
     mkdir -p "${pkgdir}/src"
     cd "${pkgdir}/src"
