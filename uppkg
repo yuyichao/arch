@@ -54,7 +54,7 @@ nwst_dt=$(git log --pretty=format:%ct -1)
 
 ((day = nwst_dt / 86400))
 
-curdate=$(date +%Y%m%d -u @${nwst_dt})
+curdate=$(date -d @${nwst_dt} -u +%Y%m%d)
 
 _mkinstl()
 {
