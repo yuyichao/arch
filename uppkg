@@ -1,0 +1,8 @@
+#!/bin/bash
+srcdir=$(dirname $(readlink -f "$0"))
+
+"$srcdir/s-util/uppkg" "$1"/s-util/{log,pkg}
+
+cd "${scptdir}"
+git pull
+git checkout master
