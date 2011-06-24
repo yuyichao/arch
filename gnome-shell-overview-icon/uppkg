@@ -72,7 +72,7 @@ if [[ "$presec" < "$nwst_dt" ]] ;then
     cd "${pkgdir}/pkg-git"
     makepkg --source
     aurup "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "$cate"
-    rm "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "${install}" PKGBUILD
+    rm "${pkgname}-git-${curdate}-${currel}.src.tar.gz" PKGBUILD
     cd "${pkgdir}/src/${pkgname}"
 else
     currel="$prerel"
