@@ -110,7 +110,3 @@ fi
     echo "$nwst_dt"
     echo "$nwst_tg"
 } > "${stat_f}"
-
-cd "${scptdir}"
-git pull
-git checkout master
