@@ -2,10 +2,9 @@
 srcdir=$(dirname $(readlink -f "$0"))
 
 cd "${srcdir}"
+git pull
+git checkout master
 
 for dir in */ ;do
     "$srcdir/$dir/uppkg" "$1"/"$dir"/{pkg,log}
 done
-
-git pull
-git checkout master
