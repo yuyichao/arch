@@ -14,7 +14,7 @@ if ! [[ $stat_f =~ ^/ ]] ;then
     stat_f="$PWD/$stat_f"
 fi
 
-gitroot='git://github.com/yuyichao/${pkgname}.git'
+gitroot="git://github.com/yuyichao/${pkgname}.git"
 
 scptdir=$(dirname $(readlink -f "${BASH_SOURCE}"))
 
