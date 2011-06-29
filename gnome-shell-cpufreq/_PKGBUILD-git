@@ -1,0 +1,31 @@
+#!/bin/bash
+
+pkgdesc="changing cpu frequency in gnome-shell, git version."
+arch=('any')
+url="https://github.com/yuyichao/gnome-shell-cpufreq"
+license=('GPL')
+depends=('gnome-shell' 'gnome-applets')
+makedepends=('git')
+
+_gitroot='git://github.com/yuyichao/gnome-shell-cpufreq.git'
+_gitname='gnome-shell-cpufreq'
+package()
+{
+    cd "$srcdir"
+
+    msg "Connecting to github.com"
+
+    if [ -d "$startdir/src/$_gitname" ] ;then
+        cd "$startdir/src/$_gitname" && git pull origin
+        msg "The local files are updated."
+    else
+        git clone "$_gitroot"
+    fi
+    msg "GIT checkout done or server timeout"
+
+    cd "$srcdir/$_gitname"
+
+    git checkout master
+
+    ./install -p "$pkgdir" --nopost
+}

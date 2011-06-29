@@ -1,0 +1,14 @@
+#!/bin/bash
+
+pkgrel=1
+pkgdesc="changing cpu frequency in gnome-shell"
+arch=('any')
+url="https://github.com/yuyichao/gnome-shell-cpufreq"
+license=('GPL')
+depends=('gnome-shell' 'gnome-applets')
+
+package()
+{
+    cd "${srcdir}/${_fname}"
+    ./install -p "$pkgdir" --nopost
+}
