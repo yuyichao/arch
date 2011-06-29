@@ -62,7 +62,7 @@ _mkinstl()
     cat > "${pkgdir}/${install}" <<EOF
 post_install() {
     $(${srcdir}/install --post)
-    post_instl /usr/share/glib-2.0/schemas
+    post /usr/share/glib-2.0/schemas
 }
 post_remove() {
     post_install
