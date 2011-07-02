@@ -9,7 +9,7 @@ license=('GPL3')
 depends=('desktop-file-utils' 'xdg-utils')
 makedepends=('git')
 
-_gitroot='git://github.com/yuyichao/urlol.git'
+_gitroot='https://yuyichao@github.com/yuyichao/urlol.git'
 _gitname='urlol'
 package()
 {

@@ -7,7 +7,7 @@ license=('GPL')
 depends=('gnome-shell' 'gnome-applets')
 makedepends=('git')
 
-_gitroot='git://github.com/yuyichao/gnome-shell-cpufreq.git'
+_gitroot='https://yuyichao@github.com/yuyichao/gnome-shell-cpufreq.git'
 _gitname='gnome-shell-cpufreq'
 package()
 {
