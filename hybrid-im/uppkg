@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-pkgname="hybrid-im-git"
+pkgname="hybrid-im"
 cate="network"
 pkgdir="$1"
 stat_f="$2"
