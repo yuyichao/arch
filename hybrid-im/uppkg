@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 pkgname="hybrid-im"
+gitname="hybrid"
 cate="network"
 pkgdir="$1"
 stat_f="$2"
@@ -35,15 +36,15 @@ pkgdir="$PWD"
     prever=0
 }
 
-if [[ -d "${pkgdir}/src/${pkgname}" ]] ;then
-    cd "${pkgdir}/src/${pkgname}" &&
+if [[ -d "${pkgdir}/src/${gitname}" ]] ;then
+    cd "${pkgdir}/src/${gitname}" &&
     git checkout master &&
     git pull origin
 else
     mkdir -p "${pkgdir}/src"
     cd "${pkgdir}/src"
     git clone "${gitroot}"
-    cd "${pkgname}"
+    cd "${gitname}"
 fi
 
 git checkout master
@@ -73,7 +74,7 @@ if [[ "$presec" < "$nwst_dt" ]] ;then
     makepkg --source
     aurup "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "$cate"
     rm "${pkgname}-git-${curdate}-${currel}.src.tar.gz" PKGBUILD
-    cd "${pkgdir}/src/${pkgname}"
+    cd "${pkgdir}/src/${gitname}"
 else
     currel="$prerel"
     curdate="$predate"
