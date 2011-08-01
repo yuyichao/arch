@@ -1,0 +1,92 @@
+#!/bin/bash -e
+
+pkgname="hybrid-im-git"
+cate="network"
+pkgdir="$1"
+stat_f="$2"
+HEAD='
+#Maintainer: Yichao Yu <yyc1992@gmail.com>
+#Contributor: Yichao Yu <yyc1992@gmail.com>
+'
+
+if ! [[ $stat_f =~ ^/ ]] ;then
+    stat_f="$PWD/$stat_f"
+fi
+
+gitroot='https://github.com/levin108/hybrid.git'
+
+scptdir=$(dirname $(readlink -f "${BASH_SOURCE}"))
+
+mkdir -p "$pkgdir"
+cd "$pkgdir"
+
+pkgdir="$PWD"
+
+[[ -f "$stat_f" ]] &&
+{
+    read predate
+    read prerel
+    read presec
+    read prever
+} < "${stat_f}" || {
+    predate=0
+    prerel=0
+    presec=0
+    prever=0
+}
+
+if [[ -d "${pkgdir}/src/${pkgname}" ]] ;then
+    cd "${pkgdir}/src/${pkgname}" &&
+    git checkout master &&
+    git pull origin
+else
+    mkdir -p "${pkgdir}/src"
+    cd "${pkgdir}/src"
+    git clone "${gitroot}"
+    cd "${pkgname}"
+fi
+
+git checkout master
+
+nwst_tg=$(git tag -l | tail -1)
+nwst_dt=$(git log --pretty=format:%ct -1)
+
+((day = nwst_dt / 86400))
+
+curdate=$(date -d @${nwst_dt} -u +%Y%m%d)
+
+if [[ "$presec" < "$nwst_dt" ]] ;then
+    if [[ ${predate} == ${curdate} ]] ;then
+        ((currel = prerel + 1))
+    else
+        ((currel = 1))
+    fi
+    mkdir -p "${pkgdir}/pkg-git"
+    {
+        echo "$HEAD"
+        echo "pkgname=${pkgname}-git"
+        echo "pkgver=${curdate}"
+        echo "pkgrel=${currel}"
+        cat | sed -e '/^#!/d'
+    } < "${scptdir}/_PKGBUILD-git" > "${pkgdir}/pkg-git/PKGBUILD"
+    cd "${pkgdir}/pkg-git"
+    makepkg --source
+    aurup "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "$cate"
+    rm "${pkgname}-git-${curdate}-${currel}.src.tar.gz" PKGBUILD
+    cd "${pkgdir}/src/${pkgname}"
+else
+    currel="$prerel"
+    curdate="$predate"
+    nwst_dt="$presec"
+fi
+
+if [[ "$nwst_tg" != "$prever" ]] ;then
+    git checkout "${nwst_tg}"
+fi
+
+{
+    echo "$curdate"
+    echo "$currel"
+    echo "$nwst_dt"
+    echo "$nwst_tg"
+} > "${stat_f}"
