@@ -1,7 +1,7 @@
 arch=('i686' 'x86_64')
 license=('GPL')
 makedepends=('git' 'cmake')
-depends=('gtk2' 'gdk-pixbuf2' 'glib2' 'openssl' 'libxml2' 'libnotify' 'gstreamer0.10' 'libxss' 'networkmanager' 'dbus-glib')
+depends=('gtk2' 'gdk-pixbuf2' 'glib2' 'openssl' 'libxml2' 'libnotify' 'gstreamer0.10' 'libxss' 'networkmanager' 'dbus-glib' 'libwebkit')
 url='https://github.com/levin108/hybrid'
 pkgdesc="Hybird is an lightweight IM framework, currently supports China Mobile Fetion protocol and xmpp protocol."
 
