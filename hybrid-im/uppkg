@@ -9,43 +9,10 @@ HEAD='
 #Maintainer: Yichao Yu <yyc1992@gmail.com>
 #Contributor: Yichao Yu <yyc1992@gmail.com>
 '
+_gitroot='https://github.com/levin108/hybrid.git'
 
-if ! [[ $stat_f =~ ^/ ]] ;then
-    stat_f="$PWD/$stat_f"
-fi
 
-gitroot='https://github.com/levin108/hybrid.git'
 
-scptdir=$(dirname $(readlink -f "${BASH_SOURCE}"))
-
-mkdir -p "$pkgdir"
-cd "$pkgdir"
-
-pkgdir="$PWD"
-
-[[ -f "$stat_f" ]] &&
-{
-    read predate
-    read prerel
-    read presec
-    read prever
-} < "${stat_f}" || {
-    predate=0
-    prerel=0
-    presec=0
-    prever=0
-}
-
-if [[ -d "${pkgdir}/src/${gitname}" ]] ;then
-    cd "${pkgdir}/src/${gitname}" &&
-    git checkout master &&
-    git pull origin
-else
-    mkdir -p "${pkgdir}/src"
-    cd "${pkgdir}/src"
-    git clone "${gitroot}"
-    cd "${gitname}"
-fi
 
 git checkout master
 

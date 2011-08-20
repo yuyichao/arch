@@ -1,10 +1,72 @@
 #!/bin/bash
-srcdir=$(dirname $(readlink -f "$0"))
+
+chkvar() {
+    for var in "$@"; do
+        [[ -z ${!var} ]] && return 0
+    done
+    return 1
+}
+
+writevar() {
+    for var in "$@" ;do
+        echo "${var}=${!var}"
+    done
+} #cannot deal with quote
+
+gitupdate() {
+    if [[ -d "${pkgdir}/src/${_gitname}" ]] ;then
+        cd "${pkgdir}/src/${_gitname}" &&
+        git checkout master &&
+        git pull origin
+    else
+        mkdir -p "${pkgdir}/src"
+        cd "${pkgdir}/src"
+        git clone "${_gitroot}"
+        cd "${_gitname}"
+    fi
+}
+
+mkpkg() {
+    HEAD='
+#Maintainer: Yichao Yu <yyc1992@gmail.com>
+#Contributor: Yichao Yu <yyc1992@gmail.com>
+'
+    cd $1
+    scptdir="$PWD"
+    . conf
+    chkvar pkgname cate license url pkgdesc arch || {
+        echo "Some variables is lost in ${1}."
+        return 1
+    }
+    tmpdir="${tmpdir}/${pkgname}"
+    pkgdir="${tmpdir}/pkg"
+    stat_f="${tmpdir}/log"
+
+    mkdir -p "$pkgdir"
+    cd "$pkgdir"
+
+    [[ -f "$stat_f" ]] &&
+    . "$stat_f"
+    if ! git diff --quiet $curver master -- . ;then
+        
+    fi
+}
+
+srcdir=$(dirname $(readlink -f "${BASH_SOURCE}"))
 
 cd "${srcdir}"
+curver=$(git log -1 --format=format:%H)
 git pull
 git checkout master
 
-for dir in */ ;do
-    "$srcdir/$dir/uppkg" "$1"/"$dir"/{pkg,log}
+mkdir -p "$1" &> /dev/null
+tmpdir=$(readlink -f "$1") || {
+    echo "$1 doesn't exist."
+    exit 1
+}
+
+
+
+for conf in */conf ;do
+    (mkpkg "$(dirname "$conf")")
 done
