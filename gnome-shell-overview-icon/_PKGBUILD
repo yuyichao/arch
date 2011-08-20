@@ -1,5 +1,3 @@
-#!/bin/bash
-
 pkgrel=1
 pkgdesc="gnome-shell extension to display icon in overview mode"
 arch=('any')
@@ -11,6 +9,6 @@ source="https://download.github.com/${_fname}.tar.gz"
 
 package()
 {
-    cd "${srcdir}/${_fname}"
-    ./install -p "$pkgdir"
+  cd "${srcdir}/${_fname}"
+  ./install -p "$pkgdir"
 }

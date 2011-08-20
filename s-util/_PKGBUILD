@@ -1,5 +1,3 @@
-#!/bin/bash
-
 pkgrel=1
 pkgdesc="Simple utilities"
 arch=('any')
@@ -9,15 +7,15 @@ _fname="yuyichao-s-util-v${pkgver}-0-${_githash}"
 source="https://download.github.com/${_fname}.tar.gz"
 depends=('bash' 'coreutils' 'findutils' 'grep' 'awk' 'sed')
 optdepends=('xdg-utils: for using xopen to open any kind of files without annoy cli output'
-    'openssl: for grub certificate from website'
-    'nss: for add certificate in to database'
-    'wget: for using recget to download recursively'
-    'texlive-bin: for using texit to generate a tmp pdf'
-    'curl: for netman and mitclass'
-    'util-linux: mount')
+  'openssl: for grub certificate from website'
+  'nss: for add certificate in to database'
+  'wget: for using recget to download recursively'
+  'texlive-bin: for using texit to generate a tmp pdf'
+  'curl: for netman and mitclass'
+  'util-linux: mount')
 
 package()
 {
-    cd "${srcdir}/${_fname}"
-    ./install --to /usr/bin --rc /etc/bash.bashrc --prefix "$pkgdir" --no-uninstall --force-usr --nopstinstl
+  cd "${srcdir}/${_fname}"
+  ./install --to /usr/bin --rc /etc/bash.bashrc --prefix "$pkgdir" --no-uninstall --force-usr --nopstinstl
 }

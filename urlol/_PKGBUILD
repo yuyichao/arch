@@ -1,5 +1,3 @@
-#!/bin/bash
-
 pkgrel=1
 pkgdesc="Desktop Utility to open url files, git version"
 arch=('any')
@@ -9,6 +7,6 @@ depends=('desktop-file-utils' 'xdg-utils')
 
 package()
 {
-    cd "${srcdir}/${_fname}"
-    ./install -p "$pkgdir" --nopost
+  cd "${srcdir}/${_fname}"
+  ./install -p "$pkgdir" --nopost
 }
