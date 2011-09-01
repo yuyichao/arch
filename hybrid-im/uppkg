@@ -14,13 +14,6 @@ _gitroot='https://github.com/levin108/hybrid.git'
 
 
 
-git checkout master
-
-nwst_tg=$(git tag -l | tail -1)
-nwst_dt=$(git log --pretty=format:%ct -1)
-
-((day = nwst_dt / 86400))
-
 curdate=$(date -d @${nwst_dt} -u +%Y%m%d)
 
 if [[ "$presec" < "$nwst_dt" ]] ;then

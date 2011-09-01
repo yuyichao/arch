@@ -1,6 +1,11 @@
 #!/bin/bash
 
+push_a() {
+    eval "${1}=(\"\${${1}[@]}\" \"${2}\")"
+}
+
 chkvar() {
+    local var
     for var in "$@"; do
         [[ -z ${!var} ]] && return 0
     done
@@ -8,10 +13,24 @@ chkvar() {
 }
 
 writevar() {
+    local var
     for var in "$@" ;do
         echo "${var}=${!var}"
     done
 } #cannot deal with quote
+
+writeary() {
+    local var
+    for var in "$@" ;do
+        local tmparray item
+        eval "tmparray=(\"\${${var}[@]}\")"
+        echo -n "$var=("
+        for item in "${tmparray[@]}"; do
+            echo "'$item'"
+        done
+        echo ")"
+    done
+}
 
 gitupdate() {
     if [[ -d "${pkgdir}/src/${_gitname}" ]] ;then
@@ -23,6 +42,7 @@ gitupdate() {
         cd "${pkgdir}/src"
         git clone "${_gitroot}"
         cd "${_gitname}"
+        git checkout master
     fi
 }
 
@@ -38,6 +58,7 @@ mkpkg() {
         echo "Some variables is lost in ${1}."
         return 1
     }
+    stat_v=()
     tmpdir="${tmpdir}/${pkgname}"
     pkgdir="${tmpdir}/pkg"
     stat_f="${tmpdir}/log"
@@ -45,11 +66,26 @@ mkpkg() {
     mkdir -p "$pkgdir"
     cd "$pkgdir"
 
-    [[ -f "$stat_f" ]] &&
-    . "$stat_f"
+    curtime=$(date -u +%s)
+
+    [[ -f "$stat_f" ]] && . "$stat_f"
+
+    if ! [[ -z $_gitroot ]]; then
+        [[ -z $_gitname ]] && _gitname=$(basename "${_gitroot%.git}")
+        gitupdate
+        nwst_tg=$(git tag -l | tail -1)
+        nwst_dt=$(git log --pretty=format:%ct -1)
+        ((day = nwst_dt / 86400))
+    fi
+
     if ! git diff --quiet $curver master -- . ;then
         
     fi
+
+    prevtime="$curtime"
+    push_a stat_v prevtime
+
+
 }
 
 srcdir=$(dirname $(readlink -f "${BASH_SOURCE}"))
