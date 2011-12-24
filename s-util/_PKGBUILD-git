@@ -16,8 +16,7 @@ makedepends=('git')
 
 _gitroot='https://yuyichao@github.com/yuyichao/s-util.git'
 _gitname='s-util'
-package()
-{
+build() {
   cd "$srcdir"
 
   msg "Connecting to github.com"
@@ -34,5 +33,13 @@ package()
 
   git checkout master
 
-  ./install --to /usr/bin --rc /etc/bash.bashrc --prefix "$pkgdir" --no-uninstall --force-usr --nopstinstl
+  mkdir build
+  cd build
+
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+}
+
+package() {
+  cd "${srcdir}/$_gitname/build"
+  make DESTDIR="${pkgdir}" install
 }
