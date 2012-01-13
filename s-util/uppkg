@@ -4,7 +4,6 @@ pkgname="s-util"
 cate="devel"
 pkgdir="$1"
 stat_f="$2"
-install='s-util.install'
 HEAD='
 #Maintainer: Yichao Yu <yyc1992@gmail.com>
 #Contributor: Yichao Yu <yyc1992@gmail.com>
@@ -56,43 +55,24 @@ nwst_dt=$(git log --pretty=format:%ct -1)
 
 curdate=$(date -d @${nwst_dt} -u +%Y%m%d)
 
-_mkinstl()
-{
-    local pkgdir="$1" srcdir="$2"
-    cat > "${pkgdir}/${install}" <<EOF
-post_install()
-{
-$(${srcdir}/install --post_instl)
-post_instl /etc/bash.bashrc /usr/bin
-}
-pre_remove()
-{
-$(${srcdir}/install --pre_rm)
-pre_rm /usr/share/sutil
-}
-EOF
-}
-
 if [[ "$presec" < "$nwst_dt" ]] ;then
     if [[ ${predate} == ${curdate} ]] ;then
-	((currel = prerel + 1))
+        ((currel = prerel + 1))
     else
-	((currel = 1))
+        ((currel = 1))
     fi
     mkdir -p "${pkgdir}/pkg-git"
     {
-	echo "$HEAD"
-	echo "pkgname=${pkgname}-git"
-	echo "pkgver=${curdate}"
-	echo "pkgrel=${currel}"
-	echo "install=('$install')"
-	cat | sed -e '/^#!/d'
+        echo "$HEAD"
+        echo "pkgname=${pkgname}-git"
+        echo "pkgver=${curdate}"
+        echo "pkgrel=${currel}"
+        cat | sed -e '/^#!/d'
     } < "${scptdir}/_PKGBUILD-git" > "${pkgdir}/pkg-git/PKGBUILD"
-    _mkinstl "${pkgdir}/pkg-git" "${pkgdir}/src/${pkgname}"
     cd "${pkgdir}/pkg-git"
     makepkg --source
     aurup "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "$cate"
-    rm "${pkgname}-git-${curdate}-${currel}.src.tar.gz" "${install}" PKGBUILD
+    rm "${pkgname}-git-${curdate}-${currel}.src.tar.gz" PKGBUILD
     cd "${pkgdir}/src/${pkgname}"
 else
     currel="$prerel"
