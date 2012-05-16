@@ -85,7 +85,7 @@ if [[ "$presec" < "$nwst_dt" ]] ;then
         echo "pkgname=${pkgname}-git"
         echo "pkgver=${curdate}"
         echo "pkgrel=${currel}"
-        echo "install=('$install')"
+        echo "install='$install'"
         cat | sed -e '/^#!/d'
     } < "${scptdir}/_PKGBUILD-git" > "${pkgdir}/pkg-git/PKGBUILD"
     _mkinstl "${pkgdir}/pkg-git" "${pkgdir}/src/${pkgname}"
