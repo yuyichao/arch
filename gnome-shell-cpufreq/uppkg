@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-pkgname="gnome-shell-cpufreq"
+pkgname="gnome-shell-extension-cpufreq"
 cate="gnome"
 pkgdir="$1"
 stat_f="$2"
